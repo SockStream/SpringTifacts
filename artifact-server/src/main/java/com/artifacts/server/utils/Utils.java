@@ -1,5 +1,6 @@
 package com.artifacts.server.utils;
 
+import java.io.IOException;
 import java.util.Comparator;
 import java.util.List;
 
@@ -19,6 +20,12 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import com.artifacts.server.service.GameDataStore;
+
+import okhttp3.FormBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 @Component
 public class Utils {
@@ -96,5 +103,27 @@ public class Utils {
 			}
 		}
 		return qte;
+	}
+	
+	public static void SendPushBulletNotification(String title, String body) throws IOException {
+		
+		
+		    String accessToken = "o.1dtRxKC84DI3UZ0ol1cLMlf8rwILJRaQ";
+
+		    OkHttpClient client = new OkHttpClient();
+		    RequestBody requestBody = new FormBody.Builder()
+		        .add("type", "note")
+		        .add("title", title)
+		        .add("body", body)
+		        .build();
+
+		    Request request = new Request.Builder()
+		        .url("https://api.pushbullet.com/v2/pushes")
+		        .header("Access-Token", accessToken)
+		        .post(requestBody)
+		        .build();
+
+		    Response response = client.newCall(request).execute();
+		    System.out.println("Notification envoyée : " + response.code());
 	}
 }

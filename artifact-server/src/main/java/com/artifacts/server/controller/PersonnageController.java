@@ -83,4 +83,10 @@ public class PersonnageController {
     {
     	return actionService.GetStatus(id);
     }
+    
+    @GetMapping("{id}/getEquipment")
+    public String GetEquipment(@PathVariable String id)
+    {
+    	return actionService.GetEquipment(id);
+    }
 }

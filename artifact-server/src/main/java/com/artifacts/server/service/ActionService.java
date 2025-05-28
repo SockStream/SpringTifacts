@@ -450,6 +450,15 @@ public class ActionService {
     {
     	return gameDataStore.GetAction(characterId);
     }
+    
+    public String GetEquipment(String characterId)
+    {
+    	String equipment = "";
+    	
+    	equipment = gameDataStore.GetEquipment(characterId);
+    	
+    	return equipment;
+    }
 
 	public List<CharacterSchema> GetCharacters() throws ApiException {
 		return gameDataStore.getMyCharactersApi().getMyCharactersMyCharactersGet().getData();		

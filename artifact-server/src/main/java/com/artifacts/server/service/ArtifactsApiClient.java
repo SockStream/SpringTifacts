@@ -9,10 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.openapitools.ApiException;
 import org.openapitools.client.CharactersApi;
-import org.openapitools.client.MapsApi;
 import org.openapitools.client.model.CharacterResponseSchema;
-import org.openapitools.client.model.DataPageMapSchema;
-import org.openapitools.client.model.MapSchema;
 import org.springframework.http.*;
 import java.util.Map;
 

@@ -1,5 +1,6 @@
 package com.artifacts.server.service;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
@@ -19,6 +20,7 @@ import org.openapitools.client.model.CharactersListSchema;
 import org.springframework.stereotype.Service;
 
 import com.artifacts.server.config.ArtifactsApiProperties;
+import com.artifacts.server.utils.Utils;
 
 import okhttp3.OkHttpClient;
 
@@ -117,6 +119,26 @@ public class GameDataStore {
 		}
 	}
 	
+	public String GetEquipment (String characterId)
+	{
+		CharacterSchema characterSchema = getCharacter(characterId);
+		String equipment = "weapon=" + characterSchema.getWeaponSlot() +
+				"&helmet=" + characterSchema.getHelmetSlot() +
+				"&shield=" + characterSchema.getShieldSlot() +
+				"&bodyArmor=" + characterSchema.getBodyArmorSlot() +
+				"&amulet=" + characterSchema.getAmuletSlot() +
+				"&legArmor=" + characterSchema.getLegArmorSlot() +
+				"&boots=" + characterSchema.getBootsSlot() +
+				"&ring1=" + characterSchema.getRing1Slot() +
+				"&ring2=" + characterSchema.getRing2Slot() +
+				"&artifact1=" + characterSchema.getArtifact1Slot() +
+				"&artifact2=" + characterSchema.getArtifact2Slot() +
+				"&artifact3=" + characterSchema.getArtifact3Slot() +
+				"&rune=" + characterSchema.getRuneSlot() +
+				"&bag=" + characterSchema.getBagSlot();
+		return equipment;
+	}
+	
 	/*public void startAction(String characterId, Runnable task) {
 	    if (isActionRunning(characterId)) {
 	        throw new IllegalStateException("Action already running for character " + characterId);
@@ -153,8 +175,19 @@ public class GameDataStore {
 	        } catch (Exception e) {
 	            System.err.println("Erreur pendant l'action de " + characterId + " : " + e.getMessage());
 	            e.printStackTrace();
+	            try {
+					Utils.SendPushBulletNotification("Erreur pendant l'action de " + characterId + " : " + e.getMessage(), e.getStackTrace().toString());
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 	        } finally {
 	            // Nettoyage automatique à la fin du thread
+	        	try {
+					Utils.SendPushBulletNotification("Fin de l'action pour " + characterId, "");
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 	        	runningActions.remove(characterId);
 	            System.out.println("Action terminée ou interrompue pour " + characterId);
 	        }
