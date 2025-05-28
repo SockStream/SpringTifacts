@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Carte</title>
+  <style>
+    #map {
+      display: grid;
+      grid-template-columns: repeat(20, 32px);
+      grid-template-rows: repeat(16, 32px);
+      position: relative;
+      width: 640px;
+      height: 512px;
+    }
+
+    .tile {
+      position: relative;
+      width: 32px;
+      height: 32px;
+    }
+
+    .tile img.bg {
+      position: absolute;
+      width: 32px;
+      height: 32px;
+      z-index: 0;
+    }
+
+    .tile img.character {
+      position: absolute;
+      width: 32px;
+      height: 32px;
+      z-index: 1;
+    }
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+
+  <script>
+    async function loadMap() {
+      const response = await fetch("/map?startX=0&startY=0&width=20&height=16");
+      const tiles = await response.json();
+
+      const map = document.getElementById("map");
+      map.innerHTML = ''; // clear previous content
+
+      tiles.forEach(tile => {
+        const div = document.createElement("div");
+        div.className = "tile";
+
+        const bg = document.createElement("img");
+        bg.className = "bg";
+        bg.src = `/images/backgrounds/${tile.background}`;
+
+        div.appendChild(bg);
+
+        if (tile.character) {
+          const char = document.createElement("img");
+          char.className = "character";
+          char.src = `/images/characters/${tile.character}`;
+          div.appendChild(char);
+        }
+
+        map.appendChild(div);
+      });
+    }
+
+    loadMap(); // initial
+    setInterval(loadMap, 2000); // refresh every 2 seconds
+  </script>
+</body>
+</html>
