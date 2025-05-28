@@ -16,7 +16,7 @@ implements ApplicationListener<ApplicationReadyEvent>
 	public void onApplicationEvent(final ApplicationReadyEvent event)
 	{
 		try {
-			Utils.SendPushBulletNotification("test", "serveur démarré");
+			Utils.SendPushBulletNotification("Artifacts Serveur", "serveur démarré");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

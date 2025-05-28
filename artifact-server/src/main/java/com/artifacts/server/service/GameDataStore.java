@@ -176,7 +176,7 @@ public class GameDataStore {
 	            System.err.println("Erreur pendant l'action de " + characterId + " : " + e.getMessage());
 	            e.printStackTrace();
 	            try {
-					Utils.SendPushBulletNotification("Erreur pendant l'action de " + characterId + " : " + e.getMessage(), e.getStackTrace().toString());
+					Utils.SendPushBulletNotification("Artifacts Serveur","Erreur pendant l'action de " + characterId + " : " + e.getStackTrace().toString());
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -184,7 +184,7 @@ public class GameDataStore {
 	        } finally {
 	            // Nettoyage automatique à la fin du thread
 	        	try {
-					Utils.SendPushBulletNotification("Fin de l'action pour " + characterId, "");
+					Utils.SendPushBulletNotification("Artifacts Serveur","Fin de l'action pour " + characterId);
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
