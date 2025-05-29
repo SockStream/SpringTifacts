@@ -11,6 +11,7 @@ import org.openapitools.ApiClient;
 import org.openapitools.ApiException;
 import org.openapitools.client.AccountsApi;
 import org.openapitools.client.CharactersApi;
+import org.openapitools.client.EventsApi;
 import org.openapitools.client.ItemsApi;
 import org.openapitools.client.MapsApi;
 import org.openapitools.client.MyAccountApi;
@@ -35,6 +36,7 @@ public class GameDataStore {
 	private final MyAccountApi myAccountApi;
 	private final AccountsApi accountsApi;
 	private final ItemsApi itemsApi;
+	private final EventsApi eventsApi;
 	
 	private final List<CharacterSchema> characters;
 	private final ConcurrentHashMap<String, Thread> runningActions = new ConcurrentHashMap<>();
@@ -53,6 +55,7 @@ public class GameDataStore {
 		this.apiClient.setBasePath(baseUrl);
 		this.apiClient.setBearerToken(token);
 		this.myAccountApi = new MyAccountApi(this.apiClient);
+		this.eventsApi = new EventsApi(this.apiClient);
     	
     	mapsApi = new MapsApi(this.apiClient);
     	myCharactersApi = new MyCharactersApi(this.apiClient);
@@ -236,5 +239,9 @@ public class GameDataStore {
 	public MyAccountApi getMyAccountApi()
 	{
 		return myAccountApi;
+	}
+
+	public EventsApi getEventsApi() {
+		return eventsApi;
 	}
 }
