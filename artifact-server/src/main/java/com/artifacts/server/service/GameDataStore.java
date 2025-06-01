@@ -1,6 +1,8 @@
 package com.artifacts.server.service;
 
 import java.io.IOException;
+import java.time.Duration;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
@@ -174,6 +176,10 @@ public class GameDataStore {
 	    Thread actionThread = new Thread(() -> {
 	        try {
 	            System.out.println("Thread " + Thread.currentThread().getName() + " started");
+	            OffsetDateTime offsetDateTime = getCharacter(characterId).getCooldownExpiration();
+	            OffsetDateTime offsetDateTime2 = OffsetDateTime.now();
+	            Duration remaining = Duration.between(offsetDateTime2, offsetDateTime);
+	            Thread.sleep(Math.max(remaining.getSeconds()+1,1)*1000);
 	            task.run();
 	        } catch (Exception e) {
 	            System.err.println("Erreur pendant l'action de " + characterId + " : " + e.getMessage());
