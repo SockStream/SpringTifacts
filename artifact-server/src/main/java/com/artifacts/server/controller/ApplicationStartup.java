@@ -55,37 +55,40 @@ implements ApplicationListener<ApplicationReadyEvent>
 				} catch (ApiException e) {
 					e.printStackTrace();
 				}
-				List<ActiveEventSchema> activeEventSchemaList = dataPageActiveEventSchema.getData();
-				
-				for(ActiveEventSchema activeEventSchema : activeEventSchemaList)
+				if (dataPageActiveEventSchema != null)
 				{
-					if (!ActiveEventList.contains(activeEventSchema.getCode()))
-					{
-						try {
-							Utils.SendPushBulletNotification("Artifacts Serveur", "Nouvel évènement " + activeEventSchema.getCode());
-						} catch (IOException e) {
-							e.printStackTrace();
-						}
-						ActiveEventList.add(activeEventSchema.getCode());
-					}
-				}
-				
-				List<String> tmp = new ArrayList<String>();
-				
-				for (String eventEnregistré : ActiveEventList)
-				{
-					Boolean existe = false;
+					List<ActiveEventSchema> activeEventSchemaList = dataPageActiveEventSchema.getData();
 					
 					for(ActiveEventSchema activeEventSchema : activeEventSchemaList)
 					{
-						if (activeEventSchema.getCode().equals(eventEnregistré))
+						if (!ActiveEventList.contains(activeEventSchema.getCode()))
 						{
-							tmp.add(eventEnregistré);
+							try {
+								Utils.SendPushBulletNotification("Artifacts Serveur", "Nouvel évènement " + activeEventSchema.getCode());
+							} catch (IOException e) {
+								e.printStackTrace();
+							}
+							ActiveEventList.add(activeEventSchema.getCode());
 						}
 					}
+					
+					List<String> tmp = new ArrayList<String>();
+					
+					for (String eventEnregistré : ActiveEventList)
+					{
+						Boolean existe = false;
+						
+						for(ActiveEventSchema activeEventSchema : activeEventSchemaList)
+						{
+							if (activeEventSchema.getCode().equals(eventEnregistré))
+							{
+								tmp.add(eventEnregistré);
+							}
+						}
+					}
+					
+					ActiveEventList = tmp;
 				}
-				
-				ActiveEventList = tmp;
 				
 				try {
 					Thread.sleep(60000);
