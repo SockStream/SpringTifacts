@@ -89,12 +89,20 @@ public class PersonnageAction {
 				}
 				catch(ApiException e)
 				{
-					isfinished = false;
-					try {
-						Thread.sleep(1000);
-					} catch (InterruptedException e1) {
+					if (e.getCode() == 499) // cooldown
+					{
+						isfinished = false;
+						try {
+							Thread.sleep(1000);
+						} catch (InterruptedException e1) {
+							isfinished = true;
+							e1.printStackTrace();
+						}
+					}
+					else
+					{
+						interrupted.set(true);
 						isfinished = true;
-						e1.printStackTrace();
 					}
 				}
 			}
@@ -126,12 +134,20 @@ public class PersonnageAction {
 				}
 				catch(ApiException e)
 				{
-					isfinished = false;
-					try {
-						Thread.sleep(1000);
-					} catch (InterruptedException e1) {
+					if (e.getCode() == 499) // cooldown
+					{
+						isfinished = false;
+						try {
+							Thread.sleep(1000);
+						} catch (InterruptedException e1) {
+							isfinished = true;
+							e1.printStackTrace();
+						}
+					}
+					else
+					{
+						interrupted.set(true);
 						isfinished = true;
-						e1.printStackTrace();
 					}
 				}
 			}
@@ -162,12 +178,20 @@ public class PersonnageAction {
 				}
 				catch(ApiException e)
 				{
-					isfinished = false;
-					try {
-						Thread.sleep(1000);
-					} catch (InterruptedException e1) {
+					if (e.getCode() == 499) // cooldown
+					{
+						isfinished = false;
+						try {
+							Thread.sleep(1000);
+						} catch (InterruptedException e1) {
+							isfinished = true;
+							e1.printStackTrace();
+						}
+					}
+					else
+					{
+						interrupted.set(true);
 						isfinished = true;
-						e1.printStackTrace();
 					}
 				}
 			}
@@ -215,12 +239,20 @@ public class PersonnageAction {
 				}
 				catch(ApiException e)
 				{
-					isfinished = false;
-					try {
-						Thread.sleep(1000);
-					} catch (InterruptedException e1) {
+					if (e.getCode() == 499) // cooldown
+					{
+						isfinished = false;
+						try {
+							Thread.sleep(1000);
+						} catch (InterruptedException e1) {
+							isfinished = true;
+							e1.printStackTrace();
+						}
+					}
+					else
+					{
+						interrupted.set(true);
 						isfinished = true;
-						e1.printStackTrace();
 					}
 				}
 			}
@@ -265,12 +297,20 @@ public class PersonnageAction {
 				}
 				catch(ApiException e)
 				{
-					isfinished = false;
-					try {
-						Thread.sleep(1000);
-					} catch (InterruptedException e1) {
+					if (e.getCode() == 499) // cooldown
+					{
+						isfinished = false;
+						try {
+							Thread.sleep(1000);
+						} catch (InterruptedException e1) {
+							isfinished = true;
+							e1.printStackTrace();
+						}
+					}
+					else
+					{
+						interrupted.set(true);
 						isfinished = true;
-						e1.printStackTrace();
 					}
 				}
 			}
@@ -301,12 +341,20 @@ public class PersonnageAction {
 				}
 				catch(ApiException e)
 				{
-					isfinished = false;
-					try {
-						Thread.sleep(1000);
-					} catch (InterruptedException e1) {
+					if (e.getCode() == 499) // cooldown
+					{
+						isfinished = false;
+						try {
+							Thread.sleep(1000);
+						} catch (InterruptedException e1) {
+							isfinished = true;
+							e1.printStackTrace();
+						}
+					}
+					else
+					{
+						interrupted.set(true);
 						isfinished = true;
-						e1.printStackTrace();
 					}
 				}
 			}
@@ -337,12 +385,20 @@ public class PersonnageAction {
 				}
 				catch(ApiException e)
 				{
-					isfinished = false;
-					try {
-						Thread.sleep(1000);
-					} catch (InterruptedException e1) {
+					if (e.getCode() == 499) // cooldown
+					{
+						isfinished = false;
+						try {
+							Thread.sleep(1000);
+						} catch (InterruptedException e1) {
+							isfinished = true;
+							e1.printStackTrace();
+						}
+					}
+					else
+					{
+						interrupted.set(true);
 						isfinished = true;
-						e1.printStackTrace();
 					}
 				}
 			}
@@ -373,12 +429,20 @@ public class PersonnageAction {
 				}
 				catch(ApiException e)
 				{
-					isfinished = false;
-					try {
-						Thread.sleep(1000);
-					} catch (InterruptedException e1) {
+					if (e.getCode() == 499) // cooldown
+					{
+						isfinished = false;
+						try {
+							Thread.sleep(1000);
+						} catch (InterruptedException e1) {
+							isfinished = true;
+							e1.printStackTrace();
+						}
+					}
+					else
+					{
+						interrupted.set(true);
 						isfinished = true;
-						e1.printStackTrace();
 					}
 				}
 			}
@@ -412,12 +476,20 @@ public class PersonnageAction {
 				}
 				catch(ApiException e)
 				{
-					isfinished = false;
-					try {
-						Thread.sleep(1000);
-					} catch (InterruptedException e1) {
+					if (e.getCode() == 499) // cooldown
+					{
+						isfinished = false;
+						try {
+							Thread.sleep(1000);
+						} catch (InterruptedException e1) {
+							isfinished = true;
+							e1.printStackTrace();
+						}
+					}
+					else
+					{
+						interrupted.set(true);
 						isfinished = true;
-						e1.printStackTrace();
 					}
 				}
 			}
@@ -550,12 +622,20 @@ public class PersonnageAction {
 				}
 				catch(ApiException e)
 				{
-					isfinished = false;
-					try {
-						Thread.sleep(1000);
-					} catch (InterruptedException e1) {
+					if (e.getCode() == 499) // cooldown
+					{
+						isfinished = false;
+						try {
+							Thread.sleep(1000);
+						} catch (InterruptedException e1) {
+							isfinished = true;
+							e1.printStackTrace();
+						}
+					}
+					else
+					{
+						interrupted.set(true);
 						isfinished = true;
-						e1.printStackTrace();
 					}
 				}
 			}
@@ -589,12 +669,20 @@ public class PersonnageAction {
 				}
 				catch(ApiException e)
 				{
-					isfinished = false;
-					try {
-						Thread.sleep(1000);
-					} catch (InterruptedException e1) {
+					if (e.getCode() == 499) // cooldown
+					{
+						isfinished = false;
+						try {
+							Thread.sleep(1000);
+						} catch (InterruptedException e1) {
+							isfinished = true;
+							e1.printStackTrace();
+						}
+					}
+					else
+					{
+						interrupted.set(true);
 						isfinished = true;
-						e1.printStackTrace();
 					}
 				}
 			}
@@ -658,12 +746,20 @@ public class PersonnageAction {
 				}
 				catch(ApiException e)
 				{
-					isfinished = false;
-					try {
-						Thread.sleep(1000);
-					} catch (InterruptedException e1) {
+					if (e.getCode() == 499) // cooldown
+					{
+						isfinished = false;
+						try {
+							Thread.sleep(1000);
+						} catch (InterruptedException e1) {
+							isfinished = true;
+							e1.printStackTrace();
+						}
+					}
+					else
+					{
+						interrupted.set(true);
 						isfinished = true;
-						e1.printStackTrace();
 					}
 				}
 			}
@@ -699,12 +795,20 @@ public class PersonnageAction {
 				}
 				catch(ApiException e)
 				{
-					isfinished = false;
-					try {
-						Thread.sleep(1000);
-					} catch (InterruptedException e1) {
+					if (e.getCode() == 499) // cooldown
+					{
+						isfinished = false;
+						try {
+							Thread.sleep(1000);
+						} catch (InterruptedException e1) {
+							isfinished = true;
+							e1.printStackTrace();
+						}
+					}
+					else
+					{
+						interrupted.set(true);
 						isfinished = true;
-						e1.printStackTrace();
 					}
 				}
 			}
@@ -1146,12 +1250,20 @@ public class PersonnageAction {
 				}
 				catch(ApiException e)
 				{
-					isfinished = false;
-					try {
-						Thread.sleep(1000);
-					} catch (InterruptedException e1) {
+					if (e.getCode() == 499) // cooldown
+					{
+						isfinished = false;
+						try {
+							Thread.sleep(1000);
+						} catch (InterruptedException e1) {
+							isfinished = true;
+							e1.printStackTrace();
+						}
+					}
+					else
+					{
+						interrupted.set(true);
 						isfinished = true;
-						e1.printStackTrace();
 					}
 				}
 			}
