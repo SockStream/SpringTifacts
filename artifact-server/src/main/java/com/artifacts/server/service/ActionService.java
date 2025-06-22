@@ -83,7 +83,12 @@ public class ActionService {
         			        parts -> parts.length > 1 ? parts[1].replaceAll("\\d+$", "") : ""
         			    ));
         	}
-        	String food = additionalParamsMap.get("food");
+        	String foodTmp = null;
+        	if(additionalParams != null)
+        	{
+        		foodTmp = additionalParamsMap.get("food");
+        	}
+        	final String food = foodTmp;
         	
         	if (additionalParamsMap != null && food != null && Utils.QuantiteEnInventaire(characterId, food) == 0)
         	{
