@@ -3,13 +3,16 @@ package com.artifacts.server.service;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
 import org.openapitools.ApiException;
 import org.openapitools.client.model.CharacterSchema;
+import org.openapitools.client.model.InventorySlot;
 import org.openapitools.client.model.MapContentType;
 import org.openapitools.client.model.MyCharactersListSchema;
+import org.openapitools.client.model.SimpleEffectSchema;
 import org.springframework.stereotype.Service;
 
 import com.artifacts.server.implement.PersonnageAction;
@@ -80,8 +83,9 @@ public class ActionService {
         			        parts -> parts.length > 1 ? parts[1].replaceAll("\\d+$", "") : ""
         			    ));
         	}
+        	String food = additionalParamsMap.get("food");
         	
-        	if (additionalParamsMap != null && additionalParamsMap.get("food") != null && Utils.QuantiteEnInventaire(characterId, additionalParamsMap.get("food")) == 0)
+        	if (additionalParamsMap != null && food != null && Utils.QuantiteEnInventaire(characterId, food) == 0)
         	{
         		Runnable bougerRBanque = PersonnageAction.Bouger(characterId, "bank",null,interrupted);
 				bougerRBanque.run();
@@ -89,7 +93,7 @@ public class ActionService {
 				{
 					return;
 				}
-				Runnable retirerBanque = PersonnageAction.RetirerBanque(characterId, additionalParamsMap.get("food"), 100, interrupted);
+				Runnable retirerBanque = PersonnageAction.RetirerBanque(characterId, food, 50, interrupted);
 				retirerBanque.run();
 				if (interrupted.get())
 				{
@@ -125,6 +129,33 @@ public class ActionService {
 					return;
 				}
 				
+				if(food != null &&gameDataStore.getCharacter(characterId).getHp() < gameDataStore.getCharacter(characterId).getMaxHp())
+				{
+					try {
+						List<SimpleEffectSchema> listeEffets = gameDataStore.getItemsApi().getItemItemsCodeGet(additionalParamsMap.get("food")).getData().getEffects();
+						int healValue = listeEffets.stream().filter(e -> e.getCode().equals("heal")).findFirst().get().getValue();
+						int nb_consommables = (gameDataStore.getCharacter(characterId).getMaxHp() - gameDataStore.getCharacter(characterId).getHp()) / healValue;
+						
+						int nbDansSac = 0;
+						Optional<InventorySlot> slotOpt = gameDataStore.getCharacter(characterId).getInventory().stream().filter(i -> i.getCode().equals(food)).findFirst();
+						if(slotOpt != null)
+						{
+							nbDansSac = slotOpt.get().getQuantity();
+						}
+						Runnable manger = PersonnageAction.Manger(characterId, food,Math.min(nbDansSac,nb_consommables),interrupted);
+						manger.run();
+						
+						if (interrupted.get())
+						{
+							return;
+						}
+						
+					} catch (ApiException e) {
+						e.printStackTrace();
+					}
+				}
+				
+				
 				if(gameDataStore.getCharacter(characterId).getHp() < gameDataStore.getCharacter(characterId).getMaxHp())
 				{
 					rest.run();
@@ -157,6 +188,22 @@ public class ActionService {
 						return;
 					}
 				}
+	        	
+	        	if (food != null && Utils.QuantiteEnInventaire(characterId, food) == 0)
+	        	{
+	        		Runnable bougerRBanque = PersonnageAction.Bouger(characterId, "bank",null,interrupted);
+					bougerRBanque.run();
+					if (interrupted.get())
+					{
+						return;
+					}
+					Runnable retirerBanque = PersonnageAction.RetirerBanque(characterId, food, 50, interrupted);
+					retirerBanque.run();
+					if (interrupted.get())
+					{
+						return;
+					}
+	        	}
         	}
         });
         t.setName("Bashe " + monsterId);
@@ -424,6 +471,16 @@ public class ActionService {
     	t.setName("recycle " + quantity + " " + itemCode);
         gameDataStore.startAction(characterId, t);
         
+    }
+    
+    public void Vendre (String characterId, String itemCode, int quantity)
+    {
+    	AtomicBoolean interrupted = new AtomicBoolean(false);
+    	Thread t = new Thread(() -> {
+    	
+    	});
+    	t.setName("vends " + quantity + " " + itemCode);
+        gameDataStore.startAction(characterId, t);
     }
     
     public void Equiper(String characterId, String objectList)

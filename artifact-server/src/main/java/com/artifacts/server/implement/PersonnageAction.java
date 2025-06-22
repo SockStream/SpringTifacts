@@ -39,6 +39,7 @@ import org.openapitools.client.model.SimpleItemSchema;
 import org.openapitools.client.model.SkillResponseSchema;
 import org.openapitools.client.model.TaskResponseSchema;
 import org.openapitools.client.model.UnequipSchema;
+import org.openapitools.client.model.UseItemResponseSchema;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -446,6 +447,54 @@ public class PersonnageAction {
 					}
 				}
 			}
+		});
+		return t;
+	}
+	
+	public static Runnable Manger(String characterId, String foodName, int quantity, AtomicBoolean interrupted)
+	{
+		Thread t = new Thread(() ->
+		{
+			Boolean isfinished = false;
+			while(!isfinished)
+			{
+				isfinished = true;
+				try
+				{
+					MyCharactersApi myCharactersApi = gameDataStore.getMyCharactersApi();
+					System.out.println(characterId + " mange " + quantity + " " + foodName);
+					SimpleItemSchema itemSchema = new SimpleItemSchema();
+					itemSchema.setCode(foodName);
+					itemSchema.setQuantity(quantity);
+					UseItemResponseSchema useItemResponseSchema = myCharactersApi.actionUseItemMyNameActionUsePost(characterId, itemSchema);
+					gameDataStore.updateCharacter(useItemResponseSchema.getData().getCharacter());
+					Thread.sleep(useItemResponseSchema.getData().getCooldown().getTotalSeconds()* 1000);
+				}
+				catch (InterruptedException e) {
+					e.printStackTrace();
+					interrupted.set(true);
+	    			Thread.currentThread().interrupt();
+				}
+				catch(ApiException e)
+				{
+					if (e.getCode() == 499) // cooldown
+					{
+						isfinished = false;
+						try {
+							Thread.sleep(1000);
+						} catch (InterruptedException e1) {
+							isfinished = true;
+							e1.printStackTrace();
+						}
+					}
+					else
+					{
+						interrupted.set(true);
+						isfinished = true;
+					}
+				}
+			}
+			
 		});
 		return t;
 	}

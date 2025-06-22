@@ -42,7 +42,7 @@ public class PersonnageController {
     }
     
     @GetMapping("/{id}/basher/{monsterId}/{additionalParams}")
-    public void basherResource(@PathVariable String id, @PathVariable String monsterId, String additionalParams)
+    public void basherResource(@PathVariable String id, @PathVariable String monsterId, @PathVariable String additionalParams)
     {
     	actionService.Basher(id,monsterId, additionalParams);
     }
