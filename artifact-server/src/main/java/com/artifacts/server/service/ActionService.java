@@ -264,19 +264,31 @@ public class ActionService {
     
     public void RéaliserTache(String characterId, String additionalParams)
     {
-    	Map<String, String> additionalParamsMap = null;
-    	if (additionalParams != null && !additionalParams.isEmpty())
-    	{
-    		additionalParamsMap = Arrays.stream(additionalParams.split("&"))
-    			    .map(entry -> entry.split("=", 2)) // split chaque élément en [clé, valeur]
-    			    .collect(Collectors.toMap(
-    			        parts -> parts[0],
-    			        parts -> parts.length > 1 ? parts[1].replaceAll("\\d+$", "") : ""
-    			    ));
-    	}
-    	
+
     	AtomicBoolean interrupted = new AtomicBoolean(false);
     	 Thread t = new Thread(() -> {
+    		 
+    		 Map<String, String> additionalParamsMap = null;
+    	    	if (additionalParams != null && !additionalParams.isEmpty())
+    	    	{
+    	    		additionalParamsMap = Arrays.stream(additionalParams.split("&"))
+    	    			    .map(entry -> entry.split("=", 2)) // split chaque élément en [clé, valeur]
+    	    			    .collect(Collectors.toMap(
+    	    			        parts -> parts[0],
+    	    			        parts -> parts.length > 1 ? parts[1].replaceAll("\\d+$", "") : ""
+    	    			    ));
+    	    	}
+	    	String foodTmp = null;
+
+	    	Boolean hasFood = false;
+	    	if (additionalParamsMap != null && additionalParamsMap.get("food") != null)
+	    	{
+	    		hasFood = true;
+	    		foodTmp = additionalParamsMap.get("food");
+	    	}
+	    	
+	    	final String food = foodTmp;
+    		 
     		 Boolean interrupt = false;
 			String task = gameDataStore.getCharacter(characterId).getTask();
 			String taskType = gameDataStore.getCharacter(characterId).getTaskType();
@@ -314,10 +326,40 @@ public class ActionService {
 
 					if(gameDataStore.getCharacter(characterId).getHp() < gameDataStore.getCharacter(characterId).getMaxHp())
 					{
-						rest.run();
-						if (interrupted.get())
+						if (hasFood)
 						{
-							return;
+							int healValue = 0;
+							try {
+
+								List<SimpleEffectSchema> listeEffets = gameDataStore.getItemsApi().getItemItemsCodeGet(food).getData().getEffects();
+
+								healValue = listeEffets.stream().filter(e -> e.getCode().equals("heal")).findFirst().get().getValue();
+							} catch (ApiException e) {
+								e.printStackTrace();
+							}
+							int nb_consommables = (gameDataStore.getCharacter(characterId).getMaxHp() - gameDataStore.getCharacter(characterId).getHp()) / healValue;
+							
+							int nbDansSac = 0;
+							Optional<InventorySlot> slotOpt = gameDataStore.getCharacter(characterId).getInventory().stream().filter(i -> i.getCode().equals(food)).findFirst();
+							if(slotOpt != null)
+							{
+								nbDansSac = slotOpt.get().getQuantity();
+							}
+							Runnable manger = PersonnageAction.Manger(characterId, food,Math.min(nbDansSac,nb_consommables),interrupted);
+							manger.run();
+							
+							if (interrupted.get())
+							{
+								return;
+							}
+						}
+						if(gameDataStore.getCharacter(characterId).getHp() < gameDataStore.getCharacter(characterId).getMaxHp())
+						{
+							rest.run();
+							if (interrupted.get())
+							{
+								return;
+							}
 						}
 					}
 					
@@ -327,7 +369,13 @@ public class ActionService {
 					}
 					
 			        int tailleSac = Utils.CompterObjetsSac(gameDataStore.getCharacter(characterId));
-					if (taskFinished || gameDataStore.getCharacter(characterId).getInventoryMaxItems() * 0.95 <= tailleSac)
+			        int nbFood = 0;
+					Optional<InventorySlot> slotOpt = gameDataStore.getCharacter(characterId).getInventory().stream().filter(i -> i.getCode().equals(food)).findFirst();
+					if(slotOpt != null)
+					{
+						nbFood = slotOpt.get().getQuantity();
+					}
+					if (taskFinished || gameDataStore.getCharacter(characterId).getInventoryMaxItems() * 0.95 <= tailleSac || (hasFood && nbFood == 0))
 					{
 						Runnable bougerRBanque = PersonnageAction.Bouger(characterId, "bank",null,interrupted);
 						bougerRBanque.run();
@@ -340,6 +388,16 @@ public class ActionService {
 						if (interrupted.get())
 						{
 							return;
+						}
+						
+						if (hasFood)
+						{
+							Runnable retirerBanque = PersonnageAction.RetirerBanque(characterId, food, 50 - nbFood, interrupted);
+							retirerBanque.run();
+							if (interrupted.get())
+							{
+								return;
+							}
 						}
 						
 						if(!taskFinished)
