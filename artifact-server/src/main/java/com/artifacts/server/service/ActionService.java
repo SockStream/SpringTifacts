@@ -345,12 +345,15 @@ public class ActionService {
 							{
 								nbDansSac = slotOpt.get().getQuantity();
 							}
-							Runnable manger = PersonnageAction.Manger(characterId, food,Math.min(nbDansSac,nb_consommables),interrupted);
-							manger.run();
-							
-							if (interrupted.get())
+							if (nbDansSac > 0)
 							{
-								return;
+								Runnable manger = PersonnageAction.Manger(characterId, food,Math.min(nbDansSac,nb_consommables),interrupted);
+								manger.run();
+								
+								if (interrupted.get())
+								{
+									return;
+								}
 							}
 						}
 						if(gameDataStore.getCharacter(characterId).getHp() < gameDataStore.getCharacter(characterId).getMaxHp())
