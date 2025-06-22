@@ -341,7 +341,7 @@ public class ActionService {
 							
 							int nbDansSac = 0;
 							Optional<InventorySlot> slotOpt = gameDataStore.getCharacter(characterId).getInventory().stream().filter(i -> i.getCode().equals(food)).findFirst();
-							if(slotOpt != null)
+							if(!slotOpt.isEmpty())
 							{
 								nbDansSac = slotOpt.get().getQuantity();
 							}
@@ -371,7 +371,7 @@ public class ActionService {
 			        int tailleSac = Utils.CompterObjetsSac(gameDataStore.getCharacter(characterId));
 			        int nbFood = 0;
 					Optional<InventorySlot> slotOpt = gameDataStore.getCharacter(characterId).getInventory().stream().filter(i -> i.getCode().equals(food)).findFirst();
-					if(slotOpt != null)
+					if(!slotOpt.isEmpty())
 					{
 						nbFood = slotOpt.get().getQuantity();
 					}
