@@ -180,13 +180,6 @@ public class ActionService {
 					{
 						return;
 					}
-					
-					System.out.println(characterId + " part pour le monstre " + monsterId);
-				    bougerResource.run();
-					if (interrupted.get())
-					{
-						return;
-					}
 				}
 	        	
 	        	if (food != null && Utils.QuantiteEnInventaire(characterId, food) == 0)
@@ -204,6 +197,13 @@ public class ActionService {
 						return;
 					}
 	        	}
+				
+				System.out.println(characterId + " part pour le monstre " + monsterId);
+			    bougerResource.run();
+				if (interrupted.get())
+				{
+					return;
+				}
         	}
         });
         t.setName("Bashe " + monsterId);
