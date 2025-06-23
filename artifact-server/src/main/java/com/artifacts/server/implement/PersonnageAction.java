@@ -461,14 +461,17 @@ public class PersonnageAction {
 				isfinished = true;
 				try
 				{
-					MyCharactersApi myCharactersApi = gameDataStore.getMyCharactersApi();
-					System.out.println(characterId + " mange " + quantity + " " + foodName);
-					SimpleItemSchema itemSchema = new SimpleItemSchema();
-					itemSchema.setCode(foodName);
-					itemSchema.setQuantity(quantity);
-					UseItemResponseSchema useItemResponseSchema = myCharactersApi.actionUseItemMyNameActionUsePost(characterId, itemSchema);
-					gameDataStore.updateCharacter(useItemResponseSchema.getData().getCharacter());
-					Thread.sleep(useItemResponseSchema.getData().getCooldown().getTotalSeconds()* 1000);
+					if (quantity > 0)
+					{
+						MyCharactersApi myCharactersApi = gameDataStore.getMyCharactersApi();
+						System.out.println(characterId + " mange " + quantity + " " + foodName);
+						SimpleItemSchema itemSchema = new SimpleItemSchema();
+						itemSchema.setCode(foodName);
+						itemSchema.setQuantity(quantity);
+						UseItemResponseSchema useItemResponseSchema = myCharactersApi.actionUseItemMyNameActionUsePost(characterId, itemSchema);
+						gameDataStore.updateCharacter(useItemResponseSchema.getData().getCharacter());
+						Thread.sleep(useItemResponseSchema.getData().getCooldown().getTotalSeconds()* 1000);
+					}
 				}
 				catch (InterruptedException e) {
 					e.printStackTrace();
