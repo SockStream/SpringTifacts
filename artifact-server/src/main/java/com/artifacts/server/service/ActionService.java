@@ -139,7 +139,7 @@ public class ActionService {
 					try {
 						List<SimpleEffectSchema> listeEffets = gameDataStore.getItemsApi().getItemItemsCodeGet(additionalParamsMap.get("food")).getData().getEffects();
 						int healValue = listeEffets.stream().filter(e -> e.getCode().equals("heal")).findFirst().get().getValue();
-						int nb_consommables = (gameDataStore.getCharacter(characterId).getMaxHp() - gameDataStore.getCharacter(characterId).getHp()) / healValue;
+						int nb_consommables =(int) Math.ceil((double)(gameDataStore.getCharacter(characterId).getMaxHp() - gameDataStore.getCharacter(characterId).getHp()) / healValue);
 						
 						int nbDansSac = 0;
 						Optional<InventorySlot> slotOpt = gameDataStore.getCharacter(characterId).getInventory().stream().filter(i -> i.getCode().equals(food)).findFirst();
@@ -342,7 +342,7 @@ public class ActionService {
 							} catch (ApiException e) {
 								e.printStackTrace();
 							}
-							int nb_consommables = (gameDataStore.getCharacter(characterId).getMaxHp() - gameDataStore.getCharacter(characterId).getHp()) / healValue;
+							int nb_consommables = (int)Math.ceil((double) (gameDataStore.getCharacter(characterId).getMaxHp() - gameDataStore.getCharacter(characterId).getHp()) / healValue);
 							
 							int nbDansSac = 0;
 							Optional<InventorySlot> slotOpt = gameDataStore.getCharacter(characterId).getInventory().stream().filter(i -> i.getCode().equals(food)).findFirst();
